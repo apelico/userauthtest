@@ -1,0 +1,16 @@
+<nav>
+  <ul>
+      <li class='logo'><a routerLink='/home'>Social</a></li>
+
+      <li><a routerLink='/home' [routerLinkActive]="'active'">Home</a></li>
+      <li><a routerLink='/profile' [routerLinkActive]="'active'">Profile</a></li>
+      <li><a routerLink='/users' [routerLinkActive]="'active'">Users</a></li>
+      <li><a routerLink='/messenger' [routerLinkActive]="'active'">Messages</a></li>
+      <li><a routerLink='/messenger' [routerLinkActive]="'active'">Logout</a></li>
+  </ul>
+</nav>
+
+
+<div class='body'>
+  <router-outlet></router-outlet>
+</div>
