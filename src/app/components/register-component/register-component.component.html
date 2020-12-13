@@ -1,0 +1,64 @@
+<form [formGroup]="registerForm" class='register-container'>
+    <!-- First Name -->
+    <div class='form bg'>
+        <div class='title'>
+            First Name <a class='error' *ngIf="isSubmitted && firstName.errors?.required">Required</a>
+        </div>
+
+        <div class='input-div'>
+            <input type="text" formControlName="firstName" placeholder="First Name">
+        </div>
+    </div>
+
+    <!-- Last Name -->
+    <div class='form bg'>
+        <div class='title'>
+            Last Name <a class='error' *ngIf="isSubmitted && lastName.errors?.required">Required</a>
+        </div>
+
+        <div class='input-div'>
+            <input type="text" formControlName="lastName" placeholder="Last Name">
+        </div>
+    </div>
+
+    <!-- Username -->
+    <div class='form bg'>
+        <div class='title'>
+            Username
+            <a class='error' *ngIf="isSubmitted && username.errors?.required">Required</a>
+            <a class='error' *ngIf="username.errors?.minlength">must be at least 4 characters long. </a>
+            <a class='error' *ngIf="username.errors?.pattern">No special characters</a>
+        </div>
+
+        <div class='input-div'>
+            <input type="text" formControlName="username" placeholder="Username">
+        </div>
+    </div>
+
+    <!-- Password -->
+    <div class='form bg'>
+        <div class='title'>
+            Password
+            <a class='error' *ngIf="isSubmitted && password.errors?.required">Required</a>
+            <a class='error' *ngIf="password.errors?.minlength">must be at least 6 characters long. </a>
+        </div>
+
+        <div class='input-div'>
+            <input type="password" formControlName="password" placeholder="Password">
+        </div>
+    </div>
+
+    <!-- Password Confirmation -->
+    <div class='form bg'>
+        <div class='title'>
+            Confirm Password
+            <a class='error' *ngIf="isSubmitted && !doesPasswordMatch">Password does not match</a>
+        </div>
+
+        <div class='input-div'>
+            <input type="password" formControlName="confirmPassword" placeholder="Confirm Password">
+        </div>
+    </div>
+        
+    <button (click)='onSubmit()' class='bg' style='margin-right: 10px;'>Register</button>
+</form>

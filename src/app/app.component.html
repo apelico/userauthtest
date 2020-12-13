@@ -3,10 +3,11 @@
       <li class='logo'><a routerLink='/home'>Social</a></li>
 
       <li><a routerLink='/home' [routerLinkActive]="'active'">Home</a></li>
-      <li><a routerLink='/profile' [routerLinkActive]="'active'">Profile</a></li>
-      <li><a routerLink='/users' [routerLinkActive]="'active'">Users</a></li>
-      <li><a routerLink='/messenger' [routerLinkActive]="'active'">Messages</a></li>
-      <li><a routerLink='/messenger' [routerLinkActive]="'active'">Logout</a></li>
+      <li *ngIf='!isLoggedIn'><a routerLink='/login' [routerLinkActive]="'active'">Login</a></li>
+      <li *ngIf='isLoggedIn'><a routerLink='/profile' [routerLinkActive]="'active'">Profile</a></li>
+      <li *ngIf='isLoggedIn'><a routerLink='/users' [routerLinkActive]="'active'">Users</a></li>
+      <li *ngIf='isLoggedIn'><a routerLink='/messenger' [routerLinkActive]="'active'">Messages</a></li>
+      <li *ngIf='isLoggedIn'><a routerLink='/messenger' [routerLinkActive]="'active'">Logout</a></li>
   </ul>
 </nav>
 

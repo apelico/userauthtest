@@ -1,0 +1,22 @@
+<div class='body'>
+
+    <div *ngIf='!isRegistering; else register' class='login-container'>
+
+        <div>
+            <input type="text" placeholder="Username" [(ngModel)]="usernameInput">
+        </div>
+
+        <div>
+            <input type="password" placeholder="Password" [(ngModel)]="passwordInput">
+        </div>
+
+        <button class='bg' (click)='login()'>Sign In</button>
+
+        <span class='sign-up'>Dont have an account? <a (click)='clickRegister()'>Sign Up</a></span>
+    </div>
+
+    <ng-template #register>
+        <app-register-component (form)='registerUser($event)'></app-register-component>
+    </ng-template>
+
+</div>

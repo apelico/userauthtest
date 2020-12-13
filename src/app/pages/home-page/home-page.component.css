@@ -3,7 +3,8 @@
     margin: 0 auto;
     margin-top: 10px;
     color: white;
-    text-align: right;
+    background-color: rgb(50,50,50);
+    border-radius: 10px;
 }
 
 .search-bar .text{
@@ -21,9 +22,10 @@
 
 .text-container{
     border-radius: 10px;
-    background-color: rgb(30,30,30);;
-    border: solid 2px rgb(30,30,30);;
+    background-color: rgb(30,30,30);
+    border: solid 2px rgb(30,30,30);
     display: inline-block;
+    box-sizing: border-box;
     width: 100%;
     padding: 2px;
 }
@@ -36,6 +38,7 @@
 
 .search-bar button{
     padding: 4px 8px;
+    margin: 0px 8px 4px 8px;
 }
 
 .body{
