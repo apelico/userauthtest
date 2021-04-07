@@ -6,8 +6,10 @@
       <li *ngIf='!isLoggedIn'><a routerLink='/login' [routerLinkActive]="'active'">Login</a></li>
       <li *ngIf='isLoggedIn'><a routerLink='/profile' [routerLinkActive]="'active'">Profile</a></li>
       <li *ngIf='isLoggedIn'><a routerLink='/users' [routerLinkActive]="'active'">Users</a></li>
-      <li *ngIf='isLoggedIn'><a routerLink='/messenger' [routerLinkActive]="'active'">Messages</a></li>
-      <li *ngIf='isLoggedIn'><a routerLink='/messenger' [routerLinkActive]="'active'">Logout</a></li>
+      <li *ngIf='isLoggedIn'><a routerLink='/messages' [routerLinkActive]="'active'">Messages</a></li>
+      <li *ngIf='isLoggedIn' (click)='logout()'>Logout</li>
+
+      <li *ngIf='isLoggedIn' class='username'><a routerLink='/home'>{{username}}</a></li>
   </ul>
 </nav>
 

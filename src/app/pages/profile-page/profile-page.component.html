@@ -1,3 +1,22 @@
+<div class='profile bg' *ngIf='user != null'>
+
+    <div class='profile-picture'>
+        <img *ngIf='user.profilePictureURL != null' src="{{user.profilePictureURL}}">
+        <img *ngIf='user.profilePictureURL == null' src="https://i.pinimg.com/564x/d9/56/9b/d9569bbed4393e2ceb1af7ba64fdf86a.jpg">
+    </div>
+
+    <div class='attachment'>
+        <input type='file' (change)="uploadPicture($event)" class="fa fa-paperclip">
+    </div>
+    
+
+    <a>Username: {{user.username}}</a>
+    <a>First Name: {{user.firstName}}</a>
+    <a>Last Name: {{user.firstName}}</a>
+</div>
+
 <div *ngIf='user != null'>
-    {{user.username}}
+    <div *ngFor='let post of user.posts'>
+        <app-post-component [post] = 'post'></app-post-component>
+    </div>
 </div>

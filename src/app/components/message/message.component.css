@@ -1,0 +1,33 @@
+.receive{
+    float: left;
+    border-left: 5px rgb(0, 217, 255) solid;
+}
+
+.receive a {
+    float: right;
+}
+
+.sent{
+    float: right;
+    border-right: 5px rgb(0, 255, 42) solid;
+}
+
+.sent a{
+    float: left;
+}
+
+.speech-bubble {
+    background: #26272b;
+    padding: 10px;
+    width: 300px;
+    font-size: 18px;
+    color: #9fa2a7;
+    overflow:auto;
+    margin: 0px 5px;
+    word-break: break-all;
+}
+
+.speech-bubble a{
+    font-size: 14px;
+    color: #9fa2a7;
+}

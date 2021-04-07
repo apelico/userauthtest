@@ -14,12 +14,27 @@ app.use(bodyParser.json({
 
 //User posts
 app.get(('/api/getPosts'), (req,res) => {
-  res.json('success');
+
+  database.distinct('user.posts',{'user.posts': {$exists: true}}, function(err, data) {
+    res.json(data)
+  });
+
 });
 
-app.post(('/api/createPost'), (req,res) => {
-  //database.insertOne(req.body);
-  res.json('success');
+app.post(('/api/createPost'), autenticateToken,(req,res) => {
+  const username = req.user.username.toLowerCase();
+
+  var post = req.body.post;
+  post.order = getNumber();
+  post.date = getDate();
+  post.time = getTime();
+  post.username = username;
+  post.title = '';
+  post.id = crypto.randomBytes(16).toString('hex');
+
+  database.updateOne({'user.username': username}, {$push: {'user.posts': post}});
+
+  res.json(post);
 });
 
 //User Handling
@@ -27,7 +42,8 @@ app.post(('/api/register'), (req, res) => {
   let username = req.body.username.toLowerCase();
   req.body.password = encrypt(req.body.password);
 
-  let user = {[username]: req.body}
+  let user = {'user': req.body}
+  user['user']['username'] = username;
 
   database.findOne({[req.body.username]: {$exists: true}}, function(err, data) {
     if(data == null){
@@ -39,24 +55,31 @@ app.post(('/api/register'), (req, res) => {
 
 });
 
-app.get(('/api/getAuthenticationData'), autenticateToken, (req, res) => {
-  var condition = `${[req.user.username]}.password`;
+app.post(('/api/uploadPicture'), autenticateToken, (req, res) => {
+  const username = req.user.username.toLowerCase();
 
-  database.findOne({[req.user.username]: {$exists: true}},{projection:{_id: 0, [condition]: 0}}, function(err, data) {
+  database.updateOne({'user.username': username}, {$set: {'user.profilePictureURL': req.body.imageURL}});
+});
+
+app.get(('/api/getAuthenticationData'), autenticateToken, (req, res) => {
+  const username = req.user.username.toLowerCase();
+
+  database.findOne({'user.username': username},{projection:{_id: 0, 'user.password': 0}}, function(err, data) {
     if(data != null){
-      res.json(data[req.user.username]);
+      res.json(data['user']);
       return;
     }
     res.send('404'); //Not Found - User does not exist
   });
-})
+});
+
 
 app.post(('/api/getUserData'), (req, res) => {
-  var condition = `${[req.body.username]}.password`;
+  const username = req.body.username.toLowerCase();
 
-  database.findOne({[req.body.username]: {$exists: true}}, {projection:{_id: 0, [condition]: 0}}, function(err, data) {
+  database.findOne({'user.username': username}, {projection:{_id: 0, 'user.password': 0}}, function(err, data) {
     if(data != null){
-      res.json(data[req.body.username]);
+      res.json(data['user']);
       return;
     }
     res.send('404'); //Not Found - User does not exist
@@ -70,10 +93,11 @@ app.post(('/api/login'), (req,res) => {
   const username = req.body.username.toLowerCase();
   const user = { username: username }
   const accessToken = generateAccessToken(user);
+  var condition = `user.${[req.body.username]}`;
 
-  database.findOne({[username]: {$exists: true}}, function(err, data) {
+  database.findOne({'user.username': username}, function(err, data) {
     if(data != null) {
-      if(req.body.password === decrypt(data[[username]]['password'])){
+      if(req.body.password === decrypt(data['user']['password'])){
         res.json( {accessToken: accessToken} );
       }else{
         res.send('401'); //Unautorized - Password is incorrect
@@ -86,7 +110,7 @@ app.post(('/api/login'), (req,res) => {
 });
 
 function generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '15s'});
+  return jwt.sign(user, process.env.ACCESS_TOKEN, {expiresIn: '15m'});
 }
 
 function autenticateToken(req, res, next) {
@@ -147,6 +171,39 @@ function decrypt(code) {
 function split(value) {
   const textParts = [value.slice(0,32), value.slice(32,64)]
   return textParts;
+}
+
+function getNumber() {
+  var date = new Date();
+  return date.getTime();
+}
+
+//Get Current date and time
+function getDate() {
+  var date = new Date();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var year = date.getFullYear();
+
+  return month + "/" + day + "/" + year;
+}
+
+function getTime() {
+  var date = new Date();
+  
+  var minute = date.getMinutes();
+  if (minute <= 9) {
+    minute = "0" + minute;
+  }
+
+  var hour = date.getHours();
+  var time = 'AM';
+  if (hour > 12) {
+    hour -= 12;
+    time = 'PM'
+  }
+
+  return hour + ':' + minute + ' '+ time
 }
 
 

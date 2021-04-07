@@ -14,6 +14,7 @@ export class AppComponent implements OnInit{
   title = 'social-app';
   isLoggedIn: boolean = false;
   load: boolean = false;
+  username: string = '';
 
   constructor(private servicehandler: ServicehandlerService, private router: Router){
     router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
@@ -28,6 +29,11 @@ export class AppComponent implements OnInit{
   async checkUserAuthentication() {
     await this.servicehandler.getAuthenticationData().toPromise().then(data => {
       this.isLoggedIn = data != 401 ? true : false;
+      this.username = data != 401 ? data['username'] : '';
     });
+  }
+
+  logout(){
+    this.servicehandler.logout();
   }
 }

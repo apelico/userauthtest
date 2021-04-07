@@ -12,6 +12,11 @@ import { PostComponentComponent } from './components/post-component/post-compone
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterComponentComponent } from './components/register-component/register-component.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { MessagePageComponent } from './pages/message-page/message-page.component';
+import { MessageWindowComponent } from './components/message-window/message-window.component';
+import { MessageSnippetComponent } from './components/message-snippet/message-snippet.component';
+import { MessageComponent } from './components/message/message.component';
+import { MessageSnippetWindowComponent } from './components/message-snippet-window/message-snippet-window.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +26,11 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
     LoginPageComponent,
     RegisterComponentComponent,
     ProfilePageComponent,
+    MessagePageComponent,
+    MessageWindowComponent,
+    MessageSnippetComponent,
+    MessageComponent,
+    MessageSnippetWindowComponent,
   ],
   imports: [
     BrowserModule,

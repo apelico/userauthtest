@@ -1,22 +1,23 @@
-<div class='post'>
-    <div class='header bg'>
+<div class='post bg' *ngIf='post != null && user != null'>
+    
+    <div class='header'>
+
         <div class='profile-picture'>
-            <img src='https://mymodernmet.com/wp/wp-content/uploads/2019/03/elements-of-art-6.jpg'>
+            <img *ngIf='user.profilePictureURL !== undefined' src="{{user.profilePictureURL}}">
+            <img *ngIf='user.profilePictureURL == undefined' src="https://i.pinimg.com/564x/d9/56/9b/d9569bbed4393e2ceb1af7ba64fdf86a.jpg">
         </div>
 
         <ul>
-            <li class='owner'><a>Austin</a></li>
-            <li class='time'><a>8:47pm 11/20/2020</a></li>
+            <li class='owner'><a>{{user.username}}</a></li>
+            <li class='time'><a>{{post.date}} {{post.time}}</a></li>
         </ul>
     </div>
 
-    <div class='picture bg'>
-        <img src='https://wallpaperaccess.com/full/508751.jpg'>
-    </div>
-
-    <div class='body bg'>
+    <div class='body'>
         {{post.text}}
     </div>
+
+    <!-- Post extra functions. EX: Like, Dislike, Comment, Favorite
 
     <div class='footer bg'>
         <ul>
@@ -26,4 +27,6 @@
             <li><i class="fa fa-heart-o" style='color:rgb(255, 0, 0);'></i> Favorite</li>
         </ul>
     </div>
+
+    -->
 </div>

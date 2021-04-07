@@ -1,0 +1,10 @@
+<div class='message-window'>
+    <div class="message-container">
+        <app-message class='messages' *ngFor='let message of messages' [message]='message' [isSent]='usernameOne === message.owner'></app-message>
+    </div>
+
+    <form class='message-input' (ngSubmit)="sendMessage()">
+        <input type='input' type="text" name="message" [(ngModel)]="message" placeholder="Make Announcement">
+        <button><i class="fa fa-arrow-right"></i></button> 
+    </form>
+</div>

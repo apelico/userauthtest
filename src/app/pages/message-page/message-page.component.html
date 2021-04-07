@@ -1,0 +1,11 @@
+<div class="body">
+    <div class="left-pane bg">
+        <div class="snippets">
+            <app-message-snippet [message]='getMessageSnippet(i)' *ngFor='let snippet of messanger; let i = index' [username]='snippet.usernameTwo' class='snippet' (click)='selectSnippet(i)' [ngClass]="{'active': activeIndex === i}"></app-message-snippet>
+        </div>
+    </div>
+
+    <div class="right-pane">
+        <app-message-window [messages]='getMessages()' [usernameOne]='getUsernameOne()' [usernameTwo]='getUsernameTwo()' class='message-window'></app-message-window>
+    </div>
+</div>

@@ -79,13 +79,17 @@ export class ServicehandlerService {
   }
 
   getPosts(){
-    return this.posts;
-    //return this.http.get('/api/getTodos', httpOptions);
+    //return this.posts;
+    return this.http.get('/api/getPosts', httpOptions);
   }
 
   createPost(post: any){
     this.posts.push(post);
-    return this.http.post('/api/createPost',{post: post}, httpOptions);
+    return this.http.post('/api/createPost',{post: post}, this.getTokenHeader());
+  }
+
+  uploadPicture(URL: string) {
+    return this.http.post('/api/uploadPicture',{imageURL: URL}, this.getTokenHeader());
   }
 
 }

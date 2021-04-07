@@ -13,7 +13,7 @@
     height: 40px;
     display: flex;
     border-radius: 10px 10px 0 0;
-    border-bottom: none;
+    border-bottom: solid 2px rgb(63, 63, 63);
 }
 
 .header ul{
@@ -33,15 +33,9 @@
     font-size: 14px;
 }
 
-.profile-picture{
-    box-sizing: border-box;
-    border-radius: 50%;
-}
-
 .profile-picture img{
     width: 40px;
     height: 40px;
-    border-radius: 50%;
 }
 
 /*Body Picture Styling*/
@@ -61,6 +55,7 @@
 .body{
     padding: 10px;
     border-top: none;
+    font-size: 18px;
 }
 
 /*Footer Styling*/
@@ -90,7 +85,7 @@
 }
 
 .footer li i{
-    font-size: 25px;
+    font-size: 16px;
 }
 
 /*Icon Styling*/

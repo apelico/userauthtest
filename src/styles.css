@@ -19,3 +19,16 @@ body{
 .error{
     color:red;
 }
+
+/* Profile Picture */
+
+.profile-picture{
+box-sizing: border-box;
+border-radius: 50%;
+}
+
+.profile-picture img{
+width: 100%;
+object-fit: cover;
+border-radius: 50%;
+}

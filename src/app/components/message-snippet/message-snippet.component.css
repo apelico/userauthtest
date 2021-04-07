@@ -1,0 +1,35 @@
+.message-container{
+    border-left: solid green 5px;
+    padding: 5px;
+}
+
+.profile-picture img{
+    width: 40px;
+    height: 40px;
+    padding-right: 10px;
+}
+
+.user-name{
+    display: flex;
+}
+
+.profile-picture{
+    flex: 20%;
+}
+
+.info{
+    flex: 80%;
+}
+
+.info a{
+    display: block;
+}
+
+.status{
+    font-size: 12px;
+    color: green;
+}
+
+.message-snippet a{
+    word-break:break-all;
+}

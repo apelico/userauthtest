@@ -1,0 +1,27 @@
+.body{
+    display: flex;
+    height: 100%;
+}
+
+.left-pane{
+    flex: 15%;
+    overflow-x: hidden;
+    padding: 5px;
+}
+
+.right-pane{
+    flex: 85%;
+    padding: 5px;
+    background-color: #161719;
+}
+
+.snippet{
+    display: inline-block;
+    width: 100%;
+    margin: 5px 0px;
+    background-color: #26272b;
+}
+
+.active{
+    background-color: #585858;
+}

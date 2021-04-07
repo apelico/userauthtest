@@ -1,11 +1,13 @@
-<form class='search-bar' [formGroup]='formGroup' (ngSubmit)="createPost(formGroup.value)">
-    <div class='text-container'>
-        <textarea autosize [maxRows]="10" class='text' placeholder="Write Something" formControlName='text'></textarea>
-    </div>
-    <button>Post</button>
-</form>
-
 <div class='body'>
+    <form *ngIf='isLoggedIn' class='search-bar' [formGroup]='formGroup' (ngSubmit)="createPost(formGroup.value)">
+    
+        <div class='text-container'>
+            <textarea autosize [maxRows]="10" class='text' placeholder="Write Something" formControlName='text'></textarea>
+        </div>
+    
+        <button class="bg">Post</button>
+    </form>
+    
     <div *ngFor='let post of posts'>
         <app-post-component [post] = 'post'></app-post-component>
     </div>

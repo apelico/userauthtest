@@ -1,7 +1,10 @@
 export class PostObject {
-    owner: String;
-    date: String;
-    text: String;
+    id: string;
+    order: number;
+    username: string;
+    date: string;
+    time: string;
+    text: string;
     likes: number;
     dislikes: number;
     favorite: number;

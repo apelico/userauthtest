@@ -18,22 +18,19 @@
     resize: none;
     width: 100%;
     box-sizing: border-box;
+    border-radius: 10px;
 }
 
 .text-container{
-    border-radius: 10px;
-    background-color: rgb(30,30,30);
-    border: solid 2px rgb(30,30,30);
-    display: inline-block;
     box-sizing: border-box;
     width: 100%;
-    padding: 2px;
+    border-radius: 10px;
+    padding: 5px;
 }
 
 .text-container:focus,
 .text-container:hover{
     outline: none;
-    border: solid 2px rgb(0, 195, 255);
 }
 
 .search-bar button{
@@ -43,4 +40,14 @@
 
 .body{
     width: 100%;
+    overflow-y: scroll;
+    max-height: 100%;
+}
+
+button{
+    font-size: 16px;
+    border-radius: 30px;
+    padding:8px 16px;
+    color:white;
+    width:70px;
 }

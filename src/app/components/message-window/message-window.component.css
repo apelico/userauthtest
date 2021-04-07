@@ -1,0 +1,50 @@
+.message-window{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-container{
+    max-height: 100%;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.messages{
+    display: inline-block;
+    width: 100%;
+    margin: 5px 0px;
+}
+
+.message-container::-webkit-scrollbar {
+    display: none;
+  }
+
+.message-container{
+    width: 100%;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.message-input{
+    display: flex;
+    width: 100%;
+    margin: 10px auto 0 auto;
+    height: 30px;
+}
+
+.message-input input{
+    width: 100%;
+    padding:10px;
+    border-radius: 20px 0 0 20px;
+    border: solid 2px rgb(4, 117, 209);
+    font-size: 16px;
+}
+
+.message-input button{
+    width: 80px;
+    border-radius: 0 20px 20px 0;
+    border: solid 2px rgb(4, 117, 209);
+    font-size: 16px;
+}
