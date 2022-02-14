@@ -1,22 +1,62 @@
-<div class='profile bg' *ngIf='user != null'>
+<div class='body'>
+    <div class='profile' *ngIf='user != null'>
 
-    <div class='profile-picture'>
-        <img *ngIf='user.profilePictureURL != null' src="{{user.profilePictureURL}}">
-        <img *ngIf='user.profilePictureURL == null' src="https://i.pinimg.com/564x/d9/56/9b/d9569bbed4393e2ceb1af7ba64fdf86a.jpg">
+        <div class='top-section'>
+            <div class='profile-picture'>
+                <img *ngIf='user.profilePictureURL != null' src="{{user.profilePictureURL}}">
+                <img *ngIf='user.profilePictureURL == null' src="https://i.pinimg.com/564x/d9/56/9b/d9569bbed4393e2ceb1af7ba64fdf86a.jpg">
+            </div>
+
+            <!--
+            <div class='attachment'>
+                <input type='file' (change)="uploadPicture($event)" class="fa fa-paperclip">
+            </div>
+            -->
+            
+            <div class='info'>
+                {{user.firstName}} {{user.lastName}}
+            </div>
+            
+            <button *ngIf='canAdd !== false' (click)='addUser()'>Add Friend</button>
+        </div>
+
+        <div class='bottom-section'>
+
+        </div>
     </div>
 
-    <div class='attachment'>
-        <input type='file' (change)="uploadPicture($event)" class="fa fa-paperclip">
-    </div>
-    
+    <div class='details'>
+        <div class='activity-panel' *ngIf='user != null'>
+            <p class='title'>Recent Activity</p>
 
-    <a>Username: {{user.username}}</a>
-    <a>First Name: {{user.firstName}}</a>
-    <a>Last Name: {{user.firstName}}</a>
-</div>
+            <div *ngIf='user != null'>
+                <div class='activity' *ngFor='let post of user.posts'>
+                    <div class='time'>
+                        <p>{{post.date}}</p>
+                        <p>{{post.time}}</p>
+                    </div>
+                    {{post.text}}
+                </div>
+            </div>
 
-<div *ngIf='user != null'>
-    <div *ngFor='let post of user.posts'>
-        <app-post-component [post] = 'post'></app-post-component>
+        </div>
+
+        <div class='friends' *ngIf='user != null'>
+            <p class='title'>Friends</p>
+
+            <div *ngFor='let friend of friends' class="user-name">
+
+                <div class='profile-picture'>
+                    <img *ngIf='friend.profilePictureURL !== undefined' src="{{friend.profilePictureURL}}">
+                    <img *ngIf='friend.profilePictureURL == undefined' src="https://i.pinimg.com/564x/d9/56/9b/d9569bbed4393e2ceb1af7ba64fdf86a.jpg">
+                </div>
+        
+                <div class="info">
+                    <a routerLink='/profile/{{friend.username}}'>{{friend['username']}}</a>
+                </div>
+        
+            </div>
+
+        </div>
     </div>
 </div>

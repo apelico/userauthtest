@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders, HttpErrorResponse  } from '@angular/common/htt
 import { CookieService } from 'ngx-cookie-service';
 import { UserRegisterObject } from './models/user-register-object';
 import { UserObject } from './models/user-object';
+import { MessageObject } from './models/message-object';
+
+import { Socket } from 'ngx-socket-io';
 
 import {  Observable } from 'rxjs';
 
@@ -21,7 +24,7 @@ export class ServicehandlerService {
   isLoggedIn: boolean = false;
   posts: any[] = [{text:'This is a wonderful text'}];
 
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  constructor(private http: HttpClient, private cookieService: CookieService, private socket: Socket) { }
 
 
   //User Authentication Services
@@ -46,6 +49,10 @@ export class ServicehandlerService {
     return this.http.get('/api/getAuthenticationData',this.getTokenHeader());
   }
 
+  isTokenAuthorized():Observable<any>{
+    return this.http.get('/api/isTokenAuthorized', this.getTokenHeader());
+  }
+
   getToken(): string{
     if(this.cookieService.check('token')){
       return this.cookieService.get('token');
@@ -59,7 +66,7 @@ export class ServicehandlerService {
   }
 
   removeToken(){
-    this.cookieService.delete('token');
+    this.cookieService.set('token', '');
   }
 
   getTokenHeader(){
@@ -78,6 +85,10 @@ export class ServicehandlerService {
     return this.http.post('/api/getUserData', {username: username}, httpOptions);
   }
 
+  getUserSnippet(username: string):Observable<any> {
+    return this.http.post('/api/getUserSnippet', {username: username}, httpOptions);
+  }
+
   getPosts(){
     //return this.posts;
     return this.http.get('/api/getPosts', httpOptions);
@@ -90,6 +101,39 @@ export class ServicehandlerService {
 
   uploadPicture(URL: string) {
     return this.http.post('/api/uploadPicture',{imageURL: URL}, this.getTokenHeader());
+  }
+
+
+  //Friend Services
+
+  addUser(username: string){
+    return this.http.post('/api/addUser',{usernameOne: username}, this.getTokenHeader());
+  }
+
+  checkRelationship(username: string){
+    return this.http.post('/api/checkRelationship',{usernameOne: username}, this.getTokenHeader());
+  }
+
+  getFriends(){
+    return this.http.get('/api/getFriends', this.getTokenHeader());
+  }
+
+  //Messenger Services
+
+  public getMessages(messengerID: string){
+    return this.http.post('/api/getMesseges',{'messengerID': messengerID}, this.getTokenHeader());
+  }
+
+  public getLiveMessages(messengerID: string){
+    return this.socket.fromEvent<string>("new-message:" + messengerID);
+  }
+
+  public sendMessage(messengerID: string,message) {
+    this.isTokenAuthorized().subscribe(data => {
+      if(data != 401 || data != 404){
+        this.socket.emit('new-message', {'message': message, 'messengerID':messengerID, 'sender': data});
+      }
+    });
   }
 
 }

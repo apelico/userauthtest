@@ -7,7 +7,6 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class MessageSnippetComponent implements OnInit {
   @Input() username: string;
-  @Input() message: string;
   
   constructor() { }
 

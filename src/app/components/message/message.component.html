@@ -1,6 +1,6 @@
 <div class="message-container">
     <div [ngClass]="{'sent': isSent, 'receive': !isSent}" class="speech-bubble">
-        <p>{{message.content}}</p>
-        <a>{{message.owner}}</a>
+        <p>{{message['message']}}</p>
+        <a>{{message['sender']}}</a>
     </div>
 </div>

@@ -86,6 +86,79 @@ app.post(('/api/getUserData'), (req, res) => {
   });
 });
 
+app.post(('/api/getUserSnippet'), (req, res) => {
+  const username = req.body.username.toLowerCase();
+
+  database.findOne({'user.username': username}, {projection:{_id: 0, 'user.password': 0, 'user.posts': 0, 'user.friends': 0}}, function(err, data) {
+    if(data != null){
+      res.json(data['user']);
+      return;
+    }
+    res.send('404'); //Not Found - User does not exist
+  });
+});
+
+app.get(('/api/getFriends'), autenticateToken, (req,res) => {
+  const username = req.user.username.toLowerCase();
+  
+  database.findOne({'user.username': username}, {projection:{_id: 0, 'user.password': 0, 'user.posts': 0}}, function(err, data) {
+    if(data != null){
+      res.json(data['user']);
+      return;
+    }
+    res.send('404'); //Not Found - User does not exist
+  });
+
+});
+
+//relationship handling
+app.post(('/api/addUser'), autenticateToken, (req, res) => {
+
+  const usernameOne = req.user.username.toLowerCase();
+  const usernameTwo = req.body.usernameOne.toLowerCase();
+
+  let request = {'usernameOne': usernameOne, 'usernameTwo': usernameTwo, status: 1};
+
+  relationshipDB.findOne({ $or: [{'usernameOne': usernameOne, 'usernameTwo': usernameTwo}, {'usernameOne': usernameTwo, 'usernameTwo': usernameOne}]}, function(err, data) {
+    if(data == null){
+      relationshipDB.insertOne(request);
+      return;
+    }
+
+    relationshipDB.updateOne({ $or: [{'usernameOne': usernameOne, 'usernameTwo': usernameTwo}, {'usernameOne': usernameTwo, 'usernameTwo': usernameOne}]}, {$set: {'status': 2}});
+    var messengerID = crypto.randomBytes(16).toString('hex');
+    database.updateOne({'user.username': usernameOne}, {$push: {'user.friends': {'username': usernameTwo, 'messengerID': messengerID}}});
+    database.updateOne({'user.username': usernameTwo}, {$push: {'user.friends': {'username': usernameOne, 'messengerID': messengerID}}});
+
+    messengerDB.insertOne({'messengerID': messengerID});
+  });
+});
+
+app.post(('/api/checkRelationship'), autenticateToken, (req, res) => {
+  const usernameOne = req.user.username.toLowerCase();
+  const usernameTwo = req.body.usernameOne.toLowerCase();
+  
+  if(usernameOne == usernameTwo){
+    res.send('401');
+    return;
+  }
+
+  relationshipDB.findOne({ $or: [{'usernameOne': usernameOne, 'usernameTwo': usernameTwo}, {'usernameOne': usernameTwo, 'usernameTwo': usernameOne}]}, function(err, data) {
+    if(data != null){
+      res.send(data);
+      return;
+    }
+
+    res.send('404'); //Not Found - User does not exist
+  });
+});
+
+app.get(('/api/isTokenAuthorized'), autenticateToken, (req,res) => {
+  //Sends 401 or 404 depending on invalid Token Status
+  res.json(req.user.username.toLowerCase()); //sucess if token is valid
+});
+
+
 //JSON Auth
 const jwt = require('jsonwebtoken')
 
@@ -126,12 +199,41 @@ function autenticateToken(req, res, next) {
   });
 }
 
+//Messenger Services
+var io = require('socket.io')(server);
+
+io.on('connection', (socket) => {
+  console.log('user connected');
+
+  socket.on("new-message", res => {
+    console.log(res);
+
+    messengerDB.updateOne({'messengerID': res.messengerID}, {$push: {'messages': {'sender': res.sender, 'message': res.message}}});
+
+    io.emit("new-message:" + res.messengerID,{'message':res.message, 'sender': res.sender});
+  });
+
+});
+
+app.post(('/api/getMesseges'), autenticateToken, (req,res) => {
+  messengerDB.findOne({'messengerID': req.body.messengerID}, function(err, data) {
+    if(data != null){
+      res.json(data);
+      return;
+    }
+    res.send('404'); //Not Found - User does not exist
+  });
+
+});
+
 //Database
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var uri = process.env.MONGODB_URI;
 
 var database;
+var relationshipDB;
+var messengerDB;
 
 MongoClient.connect(uri, {
   useNewUrlParser: true,
@@ -140,6 +242,8 @@ MongoClient.connect(uri, {
   if (!err) {
     console.log('Connection established to', uri);
     database = db.db('Social-App').collection('database');
+    relationshipDB = db.db('Social-App').collection('relationships');
+    messengerDB = db.db('Social-App').collection('messenger');
   } else {
     console.log("Failed to connect", uri);
   };

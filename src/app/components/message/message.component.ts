@@ -7,7 +7,7 @@ import { MessageObject } from '../../models/message-object';
   styleUrls: ['./message.component.css']
 })
 export class MessageComponent implements OnInit {
-  @Input() message: MessageObject;
+  @Input() message: string;
   @Input() isSent: boolean;
 
   constructor() { }

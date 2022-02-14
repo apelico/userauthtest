@@ -5,6 +5,9 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { AutosizeModule } from 'ngx-autosize';
 import { CookieService } from 'ngx-cookie-service';
 
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+const config: SocketIoConfig = { url: '', options: {} };
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
@@ -16,7 +19,8 @@ import { MessagePageComponent } from './pages/message-page/message-page.componen
 import { MessageWindowComponent } from './components/message-window/message-window.component';
 import { MessageSnippetComponent } from './components/message-snippet/message-snippet.component';
 import { MessageComponent } from './components/message/message.component';
-import { MessageSnippetWindowComponent } from './components/message-snippet-window/message-snippet-window.component';
+import { TestPageComponent } from './pages/test-page/test-page.component';
+import { DesignTwoComponent } from './pages/design-two/design-two.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { MessageSnippetWindowComponent } from './components/message-snippet-wind
     MessageWindowComponent,
     MessageSnippetComponent,
     MessageComponent,
-    MessageSnippetWindowComponent,
+    TestPageComponent,
+    DesignTwoComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +43,8 @@ import { MessageSnippetWindowComponent } from './components/message-snippet-wind
     HttpClientModule,
     AutosizeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SocketIoModule.forRoot(config),
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

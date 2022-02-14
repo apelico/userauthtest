@@ -8,8 +8,9 @@
         </div>
 
         <ul>
-            <li class='owner'><a>{{user.username}}</a></li>
-            <li class='time'><a>{{post.date}} {{post.time}}</a></li>
+            
+            <li class='owner'><a routerLink='/profile/{{user.username}}'>{{user.username}}</a></li>
+            <li class='time'>{{post.date}} {{post.time}}</li>
         </ul>
     </div>
 

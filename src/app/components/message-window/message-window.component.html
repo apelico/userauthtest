@@ -1,6 +1,6 @@
 <div class='message-window'>
     <div class="message-container">
-        <app-message class='messages' *ngFor='let message of messages' [message]='message' [isSent]='usernameOne === message.owner'></app-message>
+        <app-message class='messages' *ngFor='let message of messages' [message]='message' [isSent]='message.sender != receiver'></app-message>
     </div>
 
     <form class='message-input' (ngSubmit)="sendMessage()">

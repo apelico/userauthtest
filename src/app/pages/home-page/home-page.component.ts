@@ -14,6 +14,8 @@ export class HomePageComponent implements OnInit {
   formGroup;
   isLoggedIn: boolean = false;
 
+  messageList:  string[] = [];
+
   constructor(private servicehandler: ServicehandlerService, private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
       text: ''

@@ -1,59 +1,73 @@
-import { Component, OnInit } from '@angular/core';
-import { last } from 'rxjs/operators';
+import { Component, OnChanges, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MessageContainerObject } from '../../models/message-container-object';
 import { MessageObject } from '../../models/message-object';
+
+import { ServicehandlerService } from '../../servicehandler.service';
 
 @Component({
   selector: 'app-message-page',
   templateUrl: './message-page.component.html',
   styleUrls: ['./message-page.component.css']
 })
-export class MessagePageComponent implements OnInit {
+export class MessagePageComponent implements OnInit, OnChanges {
+  friends: any[];
   activeIndex: number = 0;
-  messanger: MessageContainerObject[] = [];
+  messages: any[];
 
-  constructor() {}
+  subscription: Subscription;
+
+  constructor(private serviceHandler: ServicehandlerService) {}
 
   ngOnInit(): void {
-    this.messanger.push(new MessageContainerObject("admin"));
-    this.messanger.push(new MessageContainerObject("pelico"));
-    this.messanger.push(new MessageContainerObject("John"));
-    this.messanger.push(new MessageContainerObject("Bill"));
-    this.messanger.push(new MessageContainerObject("Mark"));
+    this.getFriends();
+  }
+
+  ngOnChanges(){
   }
 
   selectSnippet(index){
     this.activeIndex = <number>index;
+    if(this.subscription != undefined){
+      this.subscription.unsubscribe();
+    }
+    this.getMessages();
+
   }
 
-  getMessageSnippet(index): string{
-    if(this.hasConversationStarted(<number>index)){
-      var i = this.messanger[<number>index];
-
-      return i.messages[i.messages.length - 1].content.substring(0,50);
+  getMessengerID(){
+    if(this.friends == undefined){
+      return;
     }
 
-    return "hi";
+    return this.friends[this.activeIndex]['messengerID'];
   }
 
-  hasConversationStarted(index: number): boolean{
-    if(this.messanger[index].messages[0] !== undefined){
-      return true;
+  getUsername(): string{
+    if(this.friends == undefined){
+      return;
     }
 
-    return false;
+    return this.friends[this.activeIndex]['username'];
   }
 
-  getMessages(): MessageObject[]{
-    return this.messanger[this.activeIndex].messages;
+  getFriends(){
+    this.serviceHandler.getFriends().subscribe(data => {
+      this.friends = data['friends'];
+    });
   }
 
-  getUsernameOne(): string{
-    return this.messanger[this.activeIndex].usernameOne;
-  }
+  getMessages(){
+    this.messages = [];
+    this.serviceHandler.getMessages(this.getMessengerID()).subscribe(data => {
+      this.messages = <any>data['messages'];
+    });
 
-  getUsernameTwo(): string{
-    return this.messanger[this.activeIndex].usernameTwo;
+
+
+    this.subscription = this.serviceHandler.getLiveMessages(this.getMessengerID()).subscribe(data => {
+      this.messages.push(<any>data);
+    });
   }
 
 }

@@ -1,29 +1,52 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MessageObject } from '../../models/message-object';
 import { ServicehandlerService } from '../../servicehandler.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-message-window',
   templateUrl: './message-window.component.html',
   styleUrls: ['./message-window.component.css']
 })
-export class MessageWindowComponent implements OnInit {
-  @Input() messages: MessageObject[] = [];
-  message: string = '';
-  @Input() usernameOne: string;
-  @Input() usernameTwo: string;
+export class MessageWindowComponent implements OnInit, OnChanges {
+  @Input() messages: any[];
+  @Input() messengerID: string;
+  @Input() receiver: string;
 
-  numbers: number[];
-  constructor(private servicehandler: ServicehandlerService) {
-   }
+  message: string = '';
+
+  constructor(private serviceHandler: ServicehandlerService, private router: Router) {
+  }
 
   ngOnInit(): void {
+
+  }
+
+  ngOnChanges(){
+    
   }
 
   sendMessage(){
-    this.messages.push(new MessageObject(this.message,this.usernameOne));
-    this.messages.push(new MessageObject("This is to test the stiff This is to test the stiff This is to test the stiff This is to test the stiff",this.usernameTwo));
+    this.serviceHandler.sendMessage(this.messengerID,this.message);
     this.message = '';
+  }
+
+  subscription: Subscription;
+  getMessages(){
+    this.messages = [];
+
+    this.serviceHandler.getMessages(this.messengerID).subscribe(data => {
+      this.messages = <any>data['messages'];
+    });
+
+    this.subscription = this.serviceHandler.getLiveMessages(this.messengerID).subscribe(data => {
+      this.messages.push(<any>data);
+    });
+  }
+
+  updateMethod(){
+    console.log("Testing");
   }
 
 }

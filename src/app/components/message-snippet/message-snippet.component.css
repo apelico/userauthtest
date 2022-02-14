@@ -19,9 +19,6 @@
 
 .info{
     flex: 80%;
-}
-
-.info a{
     display: block;
 }
 
@@ -30,6 +27,6 @@
     color: green;
 }
 
-.message-snippet a{
+.message-snippet{
     word-break:break-all;
 }
